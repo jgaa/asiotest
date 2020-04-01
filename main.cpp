@@ -123,10 +123,13 @@ void single_thread(const Config& config) {
 
 
     const auto elapsed = st_elapsed.elapsed();
-    BOOST_LOG_TRIVIAL(info) << "Single threaded context with " << pool.size() << " threads finished "
+    BOOST_LOG_TRIVIAL(info) << pool.size() << " Single threaded contexts finished "
                             << number(iterations)
-                            << " iterations in " << (elapsed / 1000000000.0) << " seconds";
+                            << " iterations in " << (elapsed / 1000000000.0) << " seconds.";
     BOOST_LOG_TRIVIAL(info) << "Parallel average time was " << (elapsed / iterations) << " ns.";
+    BOOST_LOG_TRIVIAL(info) << "Processed "
+                            << number(iterations / (elapsed / 1000000000.0))
+                            << " tasks per seconds.";
 }
 
 void multi_thread(const Config& config) {
@@ -169,12 +172,15 @@ void multi_thread(const Config& config) {
 
 
     const auto elapsed = st_elapsed.elapsed();
-    BOOST_LOG_TRIVIAL(info) << "Single threaded context with " << pool.size() << " threads finished "
+    BOOST_LOG_TRIVIAL(info) << "Shared context with " << pool.size() << " threads finished "
                             << number(iterations)
-                            << " iterations in " << (elapsed / 1000000000.0) << " seconds";
+                            << " iterations in " << (elapsed / 1000000000.0) << " seconds.";
     BOOST_LOG_TRIVIAL(info) << "Parallel average time with "
                             << number(config.strands)
                             <<" strands was " << (elapsed / iterations) << " ns.";
+    BOOST_LOG_TRIVIAL(info) << "Processed "
+                            << number(iterations / (elapsed / 1000000000.0))
+                            << " tasks per seconds.";
 }
 
 int main(int argc, char *argv[])
