@@ -82,11 +82,19 @@ void inner_call(const size_t i, BaseThread *base, const Config& cfg, T& ctx) {
     }
 }
 
-std::string number(const uint64_t num) {
-    stringstream out;
-    out.imbue(std::locale{"en_US.UTF-8"});
-    out << num;
-    return out.str();
+// https://stackoverflow.com/questions/43482488/how-to-format-a-number-with-thousands-separator-in-c-c
+string number(const uint64_t num, char thousandSep = ',')
+{
+    auto value = to_string(num);
+    int len = value.length();
+    int dlen = 3;
+
+    while (len > dlen) {
+        value.insert(len - dlen, 1, thousandSep);
+        dlen += 4;
+        len += 1;
+    }
+    return value;
 }
 
 // Test with one asio context per thread
